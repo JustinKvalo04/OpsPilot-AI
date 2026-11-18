@@ -1,0 +1,31 @@
+
+[
+  {
+    "id": "POL-001",
+    "title": "Refund and Billing Policy",
+    "category": "billing",
+    "keywords": ["refund", "billing", "charged", "charge", "payment", "duplicate", "money"],
+    "content": "Customers may request a refund for duplicate charges, incorrect billing, or eligible subscription cancellations. Refund requests must be reviewed and approved by the Finance department. Employees must verify payment records before approving a refund."
+  },
+  {
+    "id": "POL-002",
+    "title": "Account Access Policy",
+    "category": "account_management",
+    "keywords": ["account", "password", "login", "access", "locked", "reset"],
+    "content": "Customers experiencing account access issues should first attempt a password reset. Customer Support may assist with account recovery after verifying the customer's identity. Employees must never request or disclose a customer's password."
+  },
+  {
+    "id": "POL-003",
+    "title": "Technical Support Policy",
+    "category": "technical_support",
+    "keywords": ["bug", "crash", "error", "dashboard", "technical", "broken", "software"],
+    "content": "Technical issues should be assigned to the IT department. High-impact outages should be escalated immediately. Support staff should document the problem, affected systems, and troubleshooting steps."
+  },
+  {
+    "id": "POL-004",
+    "title": "Customer Communication Policy",
+    "category": "general_inquiry",
+    "keywords": ["question", "information", "help", "contact", "general", "support"],
+    "content": "Customer inquiries should receive clear, professional responses. Employees should avoid making promises about refunds, account changes, or technical resolutions before the appropriate department has confirmed them."
+  }
+]

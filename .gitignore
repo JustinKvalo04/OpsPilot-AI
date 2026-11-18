@@ -1,0 +1,27 @@
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python environment
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Local database
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Streamlit
+.streamlit/secrets.toml
+
+# System files
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

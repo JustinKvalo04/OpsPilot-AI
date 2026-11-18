@@ -583,19 +583,19 @@ if page == "Overview":
     )
 
 
-api_online = False
+    api_online = False
 
-try:
-    health_check = requests.get(
-        f"{API_URL}/health",
-        timeout=3,
-    )
-    api_online = health_check.ok
-except requests.exceptions.RequestException:
-    pass
+    try:
+        health_check = requests.get(
+            f"{API_URL}/health",
+            headers={"X-API-Key": API_KEY},
+            timeout=3,
+        )
+        api_online = health_check.ok
+    except requests.exceptions.RequestException:
+        pass
 
-database_online = False
-
+    database_online = False
 
     try:
         with sqlite3.connect(DB_PATH) as conn:
@@ -2130,6 +2130,7 @@ elif page == "Knowledge Base":
             response = requests.get(
                 f"{API_URL}/knowledge/search",
                 params={"query": query.strip()},
+                headers={"X-API-Key": API_KEY},
                 timeout=20,
             )
 

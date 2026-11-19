@@ -1151,6 +1151,15 @@ elif page == "Tickets":
 
     with st.expander("＋ Create New Ticket"):
 
+        if os.getenv("OPSPILOT_DEMO_MODE", "false").lower() == "true":
+            st.warning(
+                "PUBLIC DEMO: OpsPilot AI uses a shared demo database. "
+                "Only enter fictional support tickets. "
+                "Do not submit real names, email addresses, passwords, "
+                "payment information, or confidential customer data. "
+                "Other visitors may be able to view your submissions."
+            )
+
         with st.form("create_ticket_form"):
             new_subject = st.text_input(
                 "Ticket Subject",
@@ -1161,8 +1170,6 @@ elif page == "Tickets":
                 "Customer Message",
                 placeholder="Describe the customer's issue...",
             )
-
-
             submitted = st.form_submit_button(
                 "✓ Ticket Created"
                 if st.session_state.get("ticket_created_success")

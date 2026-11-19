@@ -389,6 +389,14 @@ def page_header(title, description):
         unsafe_allow_html=True,
     )
 
+    if os.getenv("OPSPILOT_DEMO_MODE", "false").lower() == "true":
+        st.info(
+            "PUBLIC DEMO ENVIRONMENT — OpsPilot AI uses fictional "
+            "support scenarios and a shared database. "
+            "Do not enter real personal information, passwords, "
+            "payment details, or confidential customer data."
+        )
+
 
 def section_header(title, description=""):
     st.markdown(

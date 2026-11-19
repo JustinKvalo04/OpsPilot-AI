@@ -113,7 +113,63 @@ TICKETS: dict[str, TicketOut] = {
     ticket["id"]: TicketOut(**ticket)
     for ticket in load_tickets()
 }
+# ==================================================
+# DEMO DATA INITIALIZATION
+# ==================================================
 
+def initialize_demo_tickets():
+    if os.getenv("OPSPILOT_DEMO_MODE", "false").lower() != "true":
+        return
+
+    if TICKETS:
+        return
+
+    demo_tickets = [
+        (
+            "Incorrect subscription charge",
+            "I was charged twice for my monthly subscription. "
+            "Can someone review my billing and help me get a refund?"
+        ),
+        (
+            "Unable to log into account",
+            "I cannot access my account after resetting my password. "
+            "Please help me restore access."
+        ),
+        (
+            "Application crashes during checkout",
+            "The application crashes every time I try to complete checkout. "
+            "I have restarted the app but the issue continues."
+        ),
+        (
+            "Request to update account information",
+            "I need to update the email address associated with my account. "
+            "What steps do I need to follow?"
+        ),
+        (
+            "Question about refund policy",
+            "I recently purchased a subscription and would like to know "
+            "whether I qualify for a refund."
+        ),
+    ]
+
+    for subject, message in demo_tickets:
+        item = TicketOut(
+            id=str(uuid4()),
+            subject=subject,
+            message=message,
+        )
+
+        save_ticket(item)
+        TICKETS[item.id] = item
+
+        log_action(
+            ticket_id=item.id,
+            action="ticket_created",
+            details=f"Demo ticket created: {subject}",
+        )
+
+
+initialize_demo_tickets()
 
 def find_ticket(ticket_id: str) -> TicketOut:
     ticket = TICKETS.get(ticket_id)

@@ -68,8 +68,8 @@ app = FastAPI(
 # ==================================================
 
 class TicketIn(BaseModel):
-    subject: str = Field(min_length=3)
-    message: str = Field(min_length=10)
+    subject: str = Field(min_length=3, max_length=150)
+    message: str = Field(min_length=10, max_length=2000)
 
 
 class TicketOut(BaseModel):

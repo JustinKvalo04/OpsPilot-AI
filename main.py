@@ -12,7 +12,11 @@ from fastapi import Depends, Header
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
-
+from fastapi import Request
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
 from ai_classifier import analyze_ticket
 from workflow_engine import route_ticket
 from knowledge_base import (
@@ -61,7 +65,13 @@ app = FastAPI(
     dependencies=[Depends(verify_api_key)],
 )
 
+# ==================================================
+# RATE LIMITING
+# ==================================================
 
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_middleware(SlowAPIMiddleware)
 
 # ==================================================
 # DATA MODELS
@@ -226,7 +236,8 @@ def health():
     response_model=TicketOut,
     status_code=201,
 )
-def create_ticket(ticket: TicketIn):
+@limiter.limit("10/minute")
+def create_ticket(request: Request, ticket: TicketIn):
     item = TicketOut(
         id=str(uuid4()),
         **ticket.model_dump(),
@@ -254,7 +265,8 @@ def list_tickets():
 # ==================================================
 
 @app.post("/tickets/{ticket_id}/analyze")
-def analyze_existing_ticket(ticket_id: str):
+@limiter.limit("20/minute")
+def analyze_existing_ticket(request: Request, ticket_id: str):
     ticket = find_ticket(ticket_id)
 
     try:
@@ -345,7 +357,8 @@ def ticket_recommendation(ticket_id: str):
 # ==================================================
 
 @app.post("/tickets/{ticket_id}/process")
-def process_ticket(ticket_id: str):
+@limiter.limit("20/minute")
+def process_ticket(request: Request, ticket_id: str):
     ticket = find_ticket(ticket_id)
 
     if ticket.status != "new":
@@ -403,7 +416,9 @@ def process_ticket(ticket_id: str):
 # ==================================================
 
 @app.post("/tickets/{ticket_id}/approve")
+@limiter.limit("20/minute")
 def approve_ticket(
+    request: Request,
     ticket_id: str,
     decision: ApprovalDecision,
 ):
@@ -510,7 +525,9 @@ def read_saved_response(ticket_id: str):
 
 
 @app.post("/tickets/{ticket_id}/saved-response")
+@limiter.limit("20/minute")
 def write_saved_response(
+    request: Request,
     ticket_id: str,
     payload: ResponseSaveIn,
 ):
@@ -533,7 +550,9 @@ def write_saved_response(
 
 
 @app.post("/tickets/{ticket_id}/response-action/{action}")
+@limiter.limit("20/minute")
 def change_response_status(
+    request: Request,
     ticket_id: str,
     action: str,
     payload: ResponseActionIn,
@@ -570,7 +589,8 @@ def read_response_history(ticket_id: str):
 # ==================================================
 
 @app.post("/tickets/{ticket_id}/automate")
-def automate_ticket(ticket_id: str):
+@limiter.limit("20/minute")
+def automate_ticket(request: Request, ticket_id: str):
     ticket = find_ticket(ticket_id)
 
     if ticket.status != "new":

@@ -42,6 +42,23 @@ The project combines backend development, AI-assisted decision-making, workflow 
 - Input validation.
 - Audit logging and AI usage tracking.
 
+## Application Screenshots
+
+### Operations Dashboard
+Monitor ticket activity, system connectivity, and automation performance.
+
+![Operations Dashboard](screenshots/dashboard-overview.png)
+
+### Ticket Management
+Review customer requests and initiate automated workflows.
+
+![Ticket Management](screenshots/ticket-management.png)
+
+### Workflow Analysis & Human Approval
+Demonstrates department routing, priority classification, policy-based recommendations, and human oversight.
+
+![Workflow Analysis](screenshots/workflow-analysis.png)
+
 ## Technology Stack
 
 | Component | Technology |
